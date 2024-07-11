@@ -1,3 +1,3 @@
-module github.com/annybs/version
+module github.com/annybs/go/version
 
 go 1.21
