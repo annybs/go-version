@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-// Version is a structured representation of a version number
+// Version is a structured representation of a version number.
 type Version struct {
-	Major     int
-	Minor     int
-	Patch     int
-	Extension string
+	Major     int    // Major version number.
+	Minor     int    // Minor version number.
+	Patch     int    // Patch version number.
+	Extension string // Version extension, such as pre-release number or build metdata.
 
-	Text string
+	Text string // Original version string, if this version was created via the Parse function.
 }
 
 // Compare this version (a) with another version (b).
