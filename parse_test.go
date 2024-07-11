@@ -39,14 +39,14 @@ func TestVersion_Parse(t *testing.T) {
 			} else if !errors.Is(err, testCase.Err) {
 				t.Errorf("test %d failed (expected error %q, actual error %q)", i, testCase.Err, err)
 			} else {
-				t.Logf("test %d succeeded with error %q for %q\n", i, testCase.Err, testCase.Input)
+				t.Logf("test %d passed with error %q for %q\n", i, testCase.Err, testCase.Input)
 			}
 		} else if err != nil {
 			t.Errorf("test %d failed (expected error nil, actual error %q)", i, err)
 		} else if actual.Major != testCase.Expected.Major || actual.Minor != testCase.Expected.Minor || actual.Patch != testCase.Expected.Patch || actual.Text != testCase.Expected.Text {
 			t.Errorf("test %d failed (expected %v, actual %v)", i, testCase.Expected, actual)
 		} else {
-			t.Logf("test %d succeeded with %v\n", i, actual)
+			t.Logf("test %d passed with %v\n", i, actual)
 		}
 	}
 }

@@ -29,7 +29,7 @@ func TestVersion_String(t *testing.T) {
 		if actual != testCase.Expected {
 			t.Errorf("test %d failed (expected %s, actual %s)", i, testCase.Expected, actual)
 		} else {
-			t.Logf("test %d succeeded with %s\n", i, actual)
+			t.Logf("test %d passed with %s\n", i, actual)
 		}
 	}
 }
@@ -62,7 +62,7 @@ func TestVersion_Compare(t *testing.T) {
 		if actual != testCase.Expected {
 			t.Errorf("test %d failed (expected %d, actual %d)", i, testCase.Expected, actual)
 		} else {
-			t.Logf("test %d succeeded with %d", i, actual)
+			t.Logf("test %d passed with %d", i, actual)
 		}
 	}
 }
@@ -95,7 +95,7 @@ func TestVersion_Less(t *testing.T) {
 		if actual != testCase.Expected {
 			t.Errorf("test %d failed (expected %v, actual %v)", i, testCase.Expected, actual)
 		} else {
-			t.Logf("test %d succeeded with %v", i, actual)
+			t.Logf("test %d passed with %v", i, actual)
 		}
 	}
 }
