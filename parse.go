@@ -24,7 +24,7 @@ func Parse(str string) (*Version, error) {
 	v := &Version{Text: string(str)}
 
 	if len(str) == 0 {
-		return nil, ErrInvalidVersion
+		return nil, invalid(str)
 	}
 
 	section := sectionMajor
@@ -32,13 +32,13 @@ func Parse(str string) (*Version, error) {
 
 	commit := func() error {
 		if len(chars) == 0 {
-			return ErrInvalidVersion
+			return invalid(str)
 		}
 
 		if section < sectionExtension {
 			n, err := strconv.Atoi(string(chars))
 			if err != nil {
-				return ErrInvalidVersion
+				return invalid(str)
 			}
 
 			switch section {
