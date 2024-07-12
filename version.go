@@ -40,6 +40,40 @@ func (a *Version) Compare(b *Version) int {
 	return -1
 }
 
+// Match tests the version against a constraint.
+// Gt and Lt take precedence over Gte and Lte.
+func (v *Version) Match(c *Constraint) bool {
+	if v == nil {
+		return false
+	}
+
+	if c == nil {
+		return true
+	}
+
+	if c.Gt != nil {
+		if v.Compare(c.Gt) <= 0 {
+			return false
+		}
+	} else if c.Gte != nil {
+		if v.Compare(c.Gte) < 0 {
+			return false
+		}
+	}
+
+	if c.Lt != nil {
+		if v.Compare(c.Lt) >= 0 {
+			return false
+		}
+	} else if c.Lte != nil {
+		if v.Compare(c.Lte) > 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Less performs a simple comparison of this version (a) with another version (b).
 // This function returns true if a is less than b, or false otherwise.
 //

@@ -102,3 +102,84 @@ func TestVersion_Less(t *testing.T) {
 		}
 	}
 }
+
+func TestVersion_Match(t *testing.T) {
+	type TestCase struct {
+		V        *Version
+		C        *Constraint
+		Expected bool
+	}
+
+	testCases := []TestCase{
+		{V: MustParse("1.0.0"), Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lte: MustParse("1.0.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Lte: MustParse("1.1.0")}, Expected: true},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lt: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lt: MustParse("1.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lt: MustParse("1.1.0")}, Expected: false},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lte: MustParse("1.0.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Lte: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lte: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Lte: MustParse("1.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lte: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Lte: MustParse("1.1.0")}, Expected: false},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lt: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lt: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lt: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lt: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lt: MustParse("1.1.0")}, Expected: false},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lte: MustParse("1.0.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("0.1.0"), Lte: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lte: MustParse("1.0.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.0.0"), Lte: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lte: MustParse("0.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lte: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gte: MustParse("1.1.0"), Lte: MustParse("1.1.0")}, Expected: false},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.0.0"), Gte: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("0.1.0"), Gte: MustParse("1.1.0")}, Expected: true},
+		{V: MustParse("1.0.0"), C: &Constraint{Gt: MustParse("1.1.0"), Gte: MustParse("0.1.0")}, Expected: false},
+
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("1.0.0"), Lte: MustParse("1.0.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("0.1.0"), Lte: MustParse("1.1.0")}, Expected: false},
+		{V: MustParse("1.0.0"), C: &Constraint{Lt: MustParse("1.1.0"), Lte: MustParse("0.1.0")}, Expected: true},
+	}
+
+	for i, testCase := range testCases {
+		actual := testCase.V.Match(testCase.C)
+		if actual != testCase.Expected {
+			t.Errorf("test %d failed (expected %v, actual %v)", i, testCase.Expected, actual)
+		} else {
+			t.Logf("test %d passed with %v", i, actual)
+		}
+	}
+}
