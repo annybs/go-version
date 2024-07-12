@@ -19,6 +19,10 @@ type Version struct {
 //
 // Extensions such as pre-release version or build metadata are ignored when comparing versions.
 func (a *Version) Compare(b *Version) int {
+	if a == nil || b == nil {
+		return 0
+	}
+
 	if a.Major == b.Major {
 		if a.Minor == b.Minor {
 			if a.Patch == b.Patch {
@@ -48,12 +52,21 @@ func (a *Version) Less(b *Version) bool {
 //
 // See https://semver.org/#is-v123-a-semantic-version
 func (v *Version) SemanticString() string {
+	if v == nil {
+		return ""
+	}
+
 	return fmt.Sprintf("%d.%d.%d%s", v.Major, v.Minor, v.Patch, v.Extension)
 }
 
 func (v *Version) String() string {
+	if v == nil {
+		return ""
+	}
+
 	if v.Text != "" {
 		return v.Text
 	}
+
 	return v.SemanticString()
 }

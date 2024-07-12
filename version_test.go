@@ -55,6 +55,9 @@ func TestVersion_Compare(t *testing.T) {
 		{A: MustParse("1.20.0"), B: MustParse("1.2.0"), Expected: 1},
 		{A: MustParse("1.20.0"), B: MustParse("1.2.20"), Expected: 1},
 		{A: MustParse("1.20.0"), B: MustParse("1.20.1"), Expected: -1},
+		{A: MustParse("1.0.0"), Expected: 0},
+		{B: MustParse("1.0.0"), Expected: 0},
+		{Expected: 0},
 	}
 
 	for i, testCase := range testCases {
