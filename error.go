@@ -2,16 +2,16 @@ package version
 
 import "fmt"
 
+// Version error.
+var (
+	ErrInvalidVersion = Error{Message: "invalid version %q"}
+)
+
 // Error represents a version error.
 type Error struct {
 	Message string
 	Version string
 }
-
-// Version error.
-var (
-	ErrInvalidVersion = Error{Message: "invalid version %q"}
-)
 
 // Error retrieves the message of a REST API error.
 func (e Error) Error() string {
