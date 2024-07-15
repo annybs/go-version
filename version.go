@@ -19,7 +19,11 @@ type Version struct {
 //
 // Extensions such as pre-release version or build metadata are ignored when comparing versions.
 func (a *Version) Compare(b *Version) int {
-	if a == nil || b == nil {
+	if a == nil && b != nil {
+		return -1
+	} else if a != nil && b == nil {
+		return 1
+	} else if a == nil && b == nil {
 		return 0
 	}
 
@@ -38,6 +42,13 @@ func (a *Version) Compare(b *Version) int {
 	}
 
 	return -1
+}
+
+// Equal checks for equality between two versions.
+//
+// Extensions such as pre-release version or build metadata are ignored when comparing versions.
+func (a *Version) Equal(b *Version) bool {
+	return a.Compare(b) == 0
 }
 
 // Match tests the version against a constraint.
