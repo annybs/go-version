@@ -4,4 +4,4 @@ A simple library for parsing and comparing versions according to [Semantic Versi
 
 ## License
 
-See [LICENSE.md](../LICENSE.md)
+See [LICENSE.md](./LICENSE.md)
